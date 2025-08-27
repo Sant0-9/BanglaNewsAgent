@@ -24,9 +24,9 @@ export const themeColor = [
 ];
 
 export const metadata: Metadata = {
-  title: "KhoborAgent - AI News Assistant",
-  description: "Intelligent news aggregation and Q&A system supporting multiple languages and intents",
-  keywords: ["news", "AI", "assistant", "Bangla", "multi-intent", "weather", "markets"],
+  title: "KhoborAgent - News Assistant",
+  description: "Smart news aggregation and Q&A system supporting multiple languages and intents",
+  keywords: ["news", "assistant", "Bangla", "multi-intent", "weather", "markets"],
   authors: [{ name: "KhoborAgent Team" }],
   icons: {
     icon: "/favicon.ico",

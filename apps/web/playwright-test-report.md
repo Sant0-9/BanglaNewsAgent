@@ -40,7 +40,7 @@ Comprehensive browser automation testing was conducted on the KhoborAgent web ap
 Error: strict mode violation: locator('text=News') resolved to 3 elements:
 1) <div class="inline-flex items-center rounded-full border...">News</div>
 2) <div class="inline-flex items-center rounded-full border...">News</div> 
-3) <title>KhoborAgent - AI News Assistant</title>
+3) <title>KhoborAgent - News Assistant</title>
 ```
 - **Impact**: Test flakiness when multiple elements contain same text
 - **Status**: ✅ **FIXED** - Updated selectors to be more specific

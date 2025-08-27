@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Add packages to path
 sys.path.append(str(Path(__file__).parent.parent.parent))
-from packages.llm.text_processor import NewsProcessor
+from packages.llm.openai_client import NewsProcessor
 from packages.nlp.rank import rank_articles
 from services.ingest.rss import gather_candidates, load_from_cache
 

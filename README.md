@@ -10,7 +10,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # Configure environment
-cp .env.example .env  # local settings only; no provider keys required
+cp .env.example .env  # set required environment variables
 
 # Start API server (optional)
 uvicorn apps.api.main:app --reload --port 8000
@@ -65,7 +65,7 @@ Output includes:
 
 - **RSS Ingestion**: 18 curated feeds (global + Bangladesh)
 - **Smart Ranking**: Keyword relevance + time decay scoring
-- **Processing**: Local summarization and translation helpers (no external provider)
+- **Processing**: Model-based summarization and translation
 - **Citation Integrity**: Inline source references [1][2][3]
 - **Source Diversity**: Domain-based deduplication
 - **Bilingual Output**: English and Bangla summaries

@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Add packages to path
 sys.path.append(str(Path(__file__).parent.parent))
-from llm.text_processor import TextProcessor
+from llm.openai_client import NewsProcessor
 
 
 class WikipediaClient:
@@ -47,7 +47,7 @@ class WikipediaClient:
             return None
 
 
-async def translate_to_bangla(text: str, llm_client: TextProcessor) -> str:
+async def translate_to_bangla(text: str, llm_client: NewsProcessor) -> str:
     """Translate English text to Bangla using local processor"""
     if not text:
         return ""
@@ -62,8 +62,11 @@ Rules:
 Return strict JSON: { "translation_bn": "..." }"""
     
     try:
-        # Use local helper without external providers
-        return await llm_client.translate_to_bangla(text)
+        # Use provider-backed translation via NewsProcessor for consistency
+        result = await llm_client.translate_to_bangla(text)
+        if isinstance(result, dict):
+            return result.get("summary_bn", text)
+        return str(result)
     except Exception as e:
         print(f"Translation error: {e}")
         return f"অনুবাদ করতে সমস্যা হয়েছে: {text}"
@@ -109,7 +112,7 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
     
     # Initialize clients
     wiki_client = WikipediaClient()
-    llm_client = TextProcessor()
+    llm_client = NewsProcessor()
     
     try:
         # Get Wikipedia summary

@@ -181,7 +181,7 @@ export default function HomePage() {
                 </Button>
               </div>
               <Badge variant="brand" className="animate-pulse-glow">
-                ● Online
+                Online
               </Badge>
             </div>
           </div>

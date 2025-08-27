@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - img [ref=e8]
+            - generic [ref=e10]: KhoborAgent
+          - generic [ref=e11]:
+            - button "Toggle theme" [pressed] [ref=e12] [cursor=pointer]:
+              - img [ref=e13] [cursor=pointer]
+            - link "GitHub repository" [ref=e15] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e16] [cursor=pointer]
+        - generic [ref=e19]:
+          - generic [ref=e20] [cursor=pointer]: News
+          - generic [ref=e21] [cursor=pointer]: Weather
+          - generic [ref=e22] [cursor=pointer]: Markets
+          - generic [ref=e23] [cursor=pointer]: Sports
+          - generic [ref=e24] [cursor=pointer]: Lookup
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e29]:
+          - paragraph [ref=e32]: Mobile layout test message that is quite long to test wrapping
+          - generic [ref=e35]:
+            - generic [ref=e37]: "Confidence: Med"
+            - generic [ref=e38]:
+              - button "Deep Dive" [ref=e39] [cursor=pointer]
+              - button "Timeline" [ref=e40] [cursor=pointer]
+              - button "English" [ref=e41] [cursor=pointer]
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - textbox "Type your message..." [ref=e47]
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: Enter to send · Shift+Enter for newline · Esc to cancel
+              - paragraph [ref=e50]: "Invalid API response: Required"
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - button "Bangla" [ref=e53] [cursor=pointer]
+              - button "English" [ref=e54] [cursor=pointer]
+            - generic [ref=e55]:
+              - button "Brief" [ref=e56] [cursor=pointer]
+              - button "Deep" [ref=e57] [cursor=pointer]
+          - generic [ref=e58]:
+            - button "Send" [disabled]:
+              - img
+              - text: Send
+            - button "Cancel" [disabled]:
+              - img
+              - text: Cancel
+  - region "Notifications alt+T"
+  - generic [ref=e63] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e64] [cursor=pointer]:
+      - img [ref=e65] [cursor=pointer]
+    - generic [ref=e68] [cursor=pointer]:
+      - button "Open issues overlay" [ref=e69] [cursor=pointer]:
+        - generic [ref=e70] [cursor=pointer]:
+          - generic [ref=e71] [cursor=pointer]: "1"
+          - generic [ref=e72] [cursor=pointer]: "2"
+        - generic [ref=e73] [cursor=pointer]:
+          - text: Issue
+          - generic [ref=e74] [cursor=pointer]: s
+      - button "Collapse issues badge" [ref=e75] [cursor=pointer]:
+        - img [ref=e76] [cursor=pointer]
+  - alert [ref=e78]
+```

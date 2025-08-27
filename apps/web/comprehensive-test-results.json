@@ -1,0 +1,1056 @@
+
+> khobor-agent-ui@0.1.0 test:e2e
+> playwright test --project=chromium tests/e2e/app-validation.spec.ts tests/e2e/comprehensive-chat-tests.spec.ts --reporter=json
+
+{
+  "config": {
+    "configFile": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/playwright.config.ts",
+    "rootDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 6,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "app-validation.spec.ts",
+      "file": "app-validation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "KhoborAgent Application - Updated Tests",
+          "file": "app-validation.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load the main page correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11893,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:17.002Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-fafa4497ec573a6f9f61",
+              "file": "app-validation.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "should have language toggle buttons",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11129,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:16.894Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-fad7b2a0624bdaa57a8f",
+              "file": "app-validation.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "should have mode toggle buttons",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 10637,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:17.619Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-c302185f72efa8df1018",
+              "file": "app-validation.spec.ts",
+              "line": 41,
+              "column": 7
+            },
+            {
+              "title": "should have route badges in header",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10492,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:16.998Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-6a08e5e17ce62c1fbc20",
+              "file": "app-validation.spec.ts",
+              "line": 55,
+              "column": 7
+            },
+            {
+              "title": "Send button should be disabled when input is empty",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 10160,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:17.311Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-e8db0c49443d08d8b865",
+              "file": "app-validation.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "Cancel button should be disabled initially",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 10438,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:17.655Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-82b1f57cf7bd8015743e",
+              "file": "app-validation.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "should handle keyboard shortcuts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10052,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:28.107Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-7eef73fc3691c0f5757c",
+              "file": "app-validation.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "should show helper text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 10877,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:28.348Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-8e1caf49ba9f89d7ee11",
+              "file": "app-validation.spec.ts",
+              "line": 103,
+              "column": 7
+            },
+            {
+              "title": "should have visible theme toggle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9857,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:28.783Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e077e77a8083ceb34d6-0d2a9502977a0a54503a",
+              "file": "app-validation.spec.ts",
+              "line": 107,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "comprehensive-chat-tests.spec.ts",
+      "file": "comprehensive-chat-tests.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Comprehensive Chat Functionality Tests",
+          "file": "comprehensive-chat-tests.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should send message and handle streaming API response",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 10184,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:28.855Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "975d713847b1eef27752-0f3deb133ce9ab725a28",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "should test Deep Dive action button",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 16719,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Deep dive response about the topic')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Deep dive response about the topic')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Deep dive response about the topic')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Deep dive response about the topic')\u001b[22m\n\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:78:75",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 75,
+                          "line": 78
+                        },
+                        "snippet": "  76 |     \n  77 |     // Should send another request and get deep response\n> 78 |     await expect(page.locator('text=Deep dive response about the topic')).toBeVisible();\n     |                                                                           ^\n  79 |     \n  80 |     expect(callCount).toBe(2);\n  81 |   });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 75,
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Deep dive response about the topic')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Deep dive response about the topic')\u001b[22m\n\n\n  76 |     \n  77 |     // Should send another request and get deep response\n> 78 |     await expect(page.locator('text=Deep dive response about the topic')).toBeVisible();\n     |                                                                           ^\n  79 |     \n  80 |     expect(callCount).toBe(2);\n  81 |   });\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:78:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:28.863Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-48418-est-Deep-Dive-action-button-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-48418-est-Deep-Dive-action-button-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-48418-est-Deep-Dive-action-button-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 75,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-217673d64fbdb3d5e4b6",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 41,
+              "column": 7
+            },
+            {
+              "title": "should test Timeline action button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8842,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:29.469Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "975d713847b1eef27752-af8859dd4a06488b0c89",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 83,
+              "column": 7
+            },
+            {
+              "title": "should test English action button",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 10798,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:162:57",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 57,
+                          "line": 162
+                        },
+                        "snippet": "  160 |     \n  161 |     // Click English button\n> 162 |     await page.getByRole('button', { name: 'English' }).click();\n      |                                                         ^\n  163 |     \n  164 |     // Should open English dialog\n  165 |     await expect(page.locator('text=English Answer')).toBeVisible();"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 57,
+                            "line": 162
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n\n\n  160 |     \n  161 |     // Click English button\n> 162 |     await page.getByRole('button', { name: 'English' }).click();\n      |                                                         ^\n  163 |     \n  164 |     // Should open English dialog\n  165 |     await expect(page.locator('text=English Answer')).toBeVisible();\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:162:57"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:38.376Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-eb87c--test-English-action-button-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-eb87c--test-English-action-button-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-eb87c--test-English-action-button-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 57,
+                        "line": 162
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-e2b55d39261fef3a4803",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 139,
+              "column": 7
+            },
+            {
+              "title": "should test language toggle functionality",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10480,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:195:25",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 25,
+                          "line": 195
+                        },
+                        "snippet": "  193 |     \n  194 |     // Switch to English\n> 195 |     await englishButton.click();\n      |                         ^\n  196 |     await textarea.fill('English message');\n  197 |     await sendButton.click();\n  198 |     await page.waitForTimeout(500);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 25,
+                            "line": 195
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'English' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">English</button> aka getByRole('button', { name: 'English' }).first()\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">English</button> aka getByRole('button', { name: 'English' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'English' })\u001b[22m\n\n\n  193 |     \n  194 |     // Switch to English\n> 195 |     await englishButton.click();\n      |                         ^\n  196 |     await textarea.fill('English message');\n  197 |     await sendButton.click();\n  198 |     await page.waitForTimeout(500);\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:195:25"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:38.480Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-e5811-nguage-toggle-functionality-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-e5811-nguage-toggle-functionality-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-e5811-nguage-toggle-functionality-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 25,
+                        "line": 195
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-9b13a21cb5c692c679a6",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 169,
+              "column": 7
+            },
+            {
+              "title": "should test mode toggle functionality",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 11574,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Deep' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">Deep Dive</button> aka getByRole('button', { name: 'Deep Dive' })\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">Deep</button> aka getByRole('button', { name: 'Deep', exact: true })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Deep' })\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Deep' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">Deep Dive</button> aka getByRole('button', { name: 'Deep Dive' })\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">Deep</button> aka getByRole('button', { name: 'Deep', exact: true })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Deep' })\u001b[22m\n\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:232:22",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 22,
+                          "line": 232
+                        },
+                        "snippet": "  230 |     \n  231 |     // Switch to Deep\n> 232 |     await deepButton.click();\n      |                      ^\n  233 |     await textarea.fill('Deep message');\n  234 |     await sendButton.click();\n  235 |     await page.waitForTimeout(500);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 22,
+                            "line": 232
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Deep' }) resolved to 2 elements:\n    1) <button class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border hover:text-accent-foreground rounded-md px-3 h-8 border-white/15 bg-white/5 text-white hover:bg-white/10\">Deep Dive</button> aka getByRole('button', { name: 'Deep Dive' })\n    2) <button type=\"button\" class=\"inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1\">Deep</button> aka getByRole('button', { name: 'Deep', exact: true })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Deep' })\u001b[22m\n\n\n  230 |     \n  231 |     // Switch to Deep\n> 232 |     await deepButton.click();\n      |                      ^\n  233 |     await textarea.fill('Deep message');\n  234 |     await sendButton.click();\n  235 |     await page.waitForTimeout(500);\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:232:22"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:38.834Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-9c4f8-t-mode-toggle-functionality-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-9c4f8-t-mode-toggle-functionality-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-9c4f8-t-mode-toggle-functionality-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 22,
+                        "line": 232
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-5a1d5727bf9d7db405ad",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 206,
+              "column": 7
+            },
+            {
+              "title": "should handle request cancellation with Cancel button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 9428,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:39.188Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "975d713847b1eef27752-585bcb6ae9cb341c6c4c",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 243,
+              "column": 7
+            },
+            {
+              "title": "should handle API errors gracefully",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 19419,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Server error occurred')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Server error occurred')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Server error occurred')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Server error occurred')\u001b[22m\n\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:291:62",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 62,
+                          "line": 291
+                        },
+                        "snippet": "  289 |     \n  290 |     // Should show error message\n> 291 |     await expect(page.locator('text=Server error occurred')).toBeVisible({ timeout: 10000 });\n      |                                                              ^\n  292 |   });\n  293 |\n  294 |   test('should verify API endpoints and request format', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 62,
+                            "line": 291
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('text=Server error occurred')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Server error occurred')\u001b[22m\n\n\n  289 |     \n  290 |     // Should show error message\n> 291 |     await expect(page.locator('text=Server error occurred')).toBeVisible({ timeout: 10000 });\n      |                                                              ^\n  292 |   });\n  293 |\n  294 |   test('should verify API endpoints and request format', async ({ page }) => {\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:291:62"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:39.412Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-61a83-andle-API-errors-gracefully-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-61a83-andle-API-errors-gracefully-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-61a83-andle-API-errors-gracefully-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 62,
+                        "line": 291
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-e04fc7aa6f73b1b2c75b",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 275,
+              "column": 7
+            },
+            {
+              "title": "should verify API endpoints and request format",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 5201,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"lang\": \"bn\",\u001b[22m\n\u001b[32m-   \"mode\": \"brief\",\u001b[39m\n\u001b[2m    \"query\": \"Test API endpoint verification\",\u001b[22m\n\u001b[2m  }\u001b[22m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"lang\": \"bn\",\u001b[22m\n\u001b[32m-   \"mode\": \"brief\",\u001b[39m\n\u001b[2m    \"query\": \"Test API endpoint verification\",\u001b[22m\n\u001b[2m  }\u001b[22m\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:328:33",
+                        "location": {
+                          "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                          "column": 33,
+                          "line": 328
+                        },
+                        "snippet": "  326 |     expect(requestDetails.headers['content-type']).toBe('application/json');\n  327 |     expect(requestDetails.headers['accept']).toBe('text/event-stream');\n> 328 |     expect(requestDetails.body).toEqual({\n      |                                 ^\n  329 |       query: 'Test API endpoint verification',\n  330 |       lang: 'bn',\n  331 |       mode: 'brief'"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                            "column": 33,
+                            "line": 328
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"lang\": \"bn\",\u001b[22m\n\u001b[32m-   \"mode\": \"brief\",\u001b[39m\n\u001b[2m    \"query\": \"Test API endpoint verification\",\u001b[22m\n\u001b[2m  }\u001b[22m\n\n  326 |     expect(requestDetails.headers['content-type']).toBe('application/json');\n  327 |     expect(requestDetails.headers['accept']).toBe('text/event-stream');\n> 328 |     expect(requestDetails.body).toEqual({\n      |                                 ^\n  329 |       query: 'Test API endpoint verification',\n  330 |       lang: 'bn',\n  331 |       mode: 'brief'\n    at /home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts:328:33"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:50.856Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-986d7-ndpoints-and-request-format-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-986d7-ndpoints-and-request-format-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/test-results/comprehensive-chat-tests-C-986d7-ndpoints-and-request-format-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/oneknight/projects/BanNewAgent/khoboragent/apps/web/tests/e2e/comprehensive-chat-tests.spec.ts",
+                        "column": 33,
+                        "line": 328
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "975d713847b1eef27752-9b5dedd3340f1cca1b59",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 294,
+              "column": 7
+            },
+            {
+              "title": "should handle console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 7119,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-27T00:36:48.714Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "975d713847b1eef27752-18aaf7cd459efa9f5b77",
+              "file": "comprehensive-chat-tests.spec.ts",
+              "line": 335,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-27T00:36:13.570Z",
+    "duration": 45481.474,
+    "expected": 13,
+    "skipped": 0,
+    "unexpected": 6,
+    "flaky": 0
+  }
+}

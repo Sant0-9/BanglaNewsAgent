@@ -1,0 +1,56 @@
+feeds:
+  - name: BBC World
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+    country: INT
+  - name: Reuters World
+    url: https://www.reuters.com/world/rss
+    country: INT
+  - name: AP Top
+    url: https://apnews.com/hub/ap-top-news?rss=1
+    country: INT
+  - name: Al Jazeera
+    url: https://www.aljazeera.com/xml/rss/all.xml
+    country: INT
+  - name: The Verge
+    url: https://www.theverge.com/rss/index.xml
+    country: INT
+  - name: TechCrunch
+    url: https://techcrunch.com/feed/
+    country: INT
+  - name: Ars Technica
+    url: http://feeds.arstechnica.com/arstechnica/index
+    country: INT
+  - name: Yahoo Finance Top
+    url: https://finance.yahoo.com/news/rss
+    country: INT
+  - name: CNN International
+    url: http://rss.cnn.com/rss/edition.rss
+    country: INT
+  - name: NPR Top Stories
+    url: https://feeds.npr.org/1001/rss.xml
+    country: INT
+  - name: Guardian World
+    url: https://www.theguardian.com/world/rss
+    country: INT
+  - name: Hacker News
+    url: https://hnrss.org/frontpage
+    country: INT
+  - name: The Daily Star (BD)
+    url: https://www.thedailystar.net/rss/all
+    country: BD
+  - name: Dhaka Tribune
+    url: https://www.dhakatribune.com/feed
+    country: BD
+  - name: bdnews24 (top)
+    url: https://bdnews24.com/?widgetName=rssfeed&widgetId=1150&getXmlFeed=true
+    country: BD
+  - name: New Age (BD)
+    url: https://www.newagebd.net/rss
+    country: BD
+  - name: United News (BD)
+    url: https://unb.com.bd/feed
+    country: BD
+  - name: Financial Express (BD)
+    url: https://thefinancialexpress.com.bd/rss.xml
+    country: BD
+# TODO: add more sources later (Prothom Alo public pages, etc.)

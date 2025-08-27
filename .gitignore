@@ -1,0 +1,24 @@
+# Node
+node_modules/
+apps/web/node_modules/
+.next/
+dist/
+build/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Environment and secrets
+.env
+.env.*
+apps/web/.env.local
+
+# Cache and logs
+*.log
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db

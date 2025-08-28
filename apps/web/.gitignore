@@ -48,3 +48,4 @@ next-env.d.ts
 /ui-investigation-*.png
 /test-send-functionality.js
 /test-ui-investigation.js
+/test-*.js

@@ -37,8 +37,8 @@ class OpenAIClient:
                 {"role": "system", "content": system},
                 {"role": "user", "content": prompt}
             ],
-            "temperature": 0.3,
-            "max_tokens": 2000,
+            "temperature": 0.5,  # Increased for more varied, natural responses
+            "max_tokens": 4000,  # Doubled for longer, more detailed responses
             "response_format": {"type": "json_object"}
         }
         
@@ -78,17 +78,19 @@ class OpenAIClient:
                 raise Exception(f"Failed to parse JSON response after retry: {e}")
 
 # System prompts
-EVIDENCE_TO_SUMMARY_SYSTEM = """You are a neutral, citation-first news summarizer.
+EVIDENCE_TO_SUMMARY_SYSTEM = """You are a comprehensive, citation-first news summarizer focused on delivering detailed, insightful analysis.
 Input: 2–6 sources with {title, outlet, published_at (ISO), excerpt, url}.
 
 Tasks:
-1) Identify what's NEW in the last 24–72 hours.
-2) Write 6–10 sentences in English. Place inline citations [1][2] immediately
-   after the specific claims they support. Use dates when useful.
-3) If sources conflict on numbers/facts, say so and add [disagreement].
-4) If any key claim is from a single source, add [single-source].
-5) End with one sentence: "Why it matters".
-6) Then list 2–4 "What to watch" bullets.
+1) Identify what's NEW in the last 24–72 hours with comprehensive context.
+2) Write a detailed 12–20 sentence analysis in English. Place inline citations [1][2] immediately
+   after the specific claims they support. Use dates and specific details when useful.
+3) Include background context, implications, and multiple perspectives where available.
+4) If sources conflict on numbers/facts, explain the discrepancy in detail and add [disagreement].
+5) If any key claim is from a single source, note this clearly and add [single-source].
+6) End with 2-3 sentences explaining "Why it matters" with broader implications.
+7) Then list 4–6 detailed "What to watch" bullets with specific actionable insights.
+8) Provide nuanced analysis rather than just summarizing headlines.
 
 Return strict JSON:
 { "summary_en": "... [1][2] ...",
@@ -106,13 +108,44 @@ Rules:
 
 Return strict JSON: { "summary_bn": "…" }"""
 
+# Strict citation-per-sentence summarization system
+CITATION_STRICT_SUMMARY_SYSTEM = """You are a comprehensive, citation-first news summarizer.
+Use ONLY the provided sources, referenced by numeric IDs [1..N]. Do NOT invent sources.
+
+Rules:
+- Every sentence MUST end with at least one inline citation like [1] or [2][3].
+- If you cannot support a sentence with a provided source, DELETE the sentence.
+- Write 12–18 detailed sentences covering what's NEW in the last 24–72 hours.
+- Include context, background, implications, and multiple perspectives from the sources.
+- Call out disagreements on numbers/facts explicitly and set disagreement=true.
+- If any key claim rests on a single source, add "[single-source]" inline and set single_source=true.
+- End with 2-3 "Why it matters" sentences explaining broader significance, also cited.
+- Provide substantive analysis, not just headline summaries.
+- Use specific details, numbers, dates, and quotes from sources when available.
+
+Return strict JSON ONLY:
+{ "summary_en": "... [1] ...",
+  "disagreement": true|false,
+  "single_source": true|false,
+  "notes": "optional short caveats or empty string" }"""
+
+# Translation system that preserves [n] markers exactly
+CITED_EN_TO_BN_TRANSLATION_SYSTEM = """Translate the English news summary to standard Bangla.
+Rules:
+- Keep every inline citation marker [n] exactly as-is and in the same positions.
+- Neutral newsroom tone; use Bangla punctuation "।".
+- Preserve named entities (people/orgs/places/products) in Latin unless a very common Bangla form exists; you may add the Bangla in parentheses.
+- Do not add or remove facts.
+
+Return strict JSON ONLY: { "summary_bn": "…" }"""
+
 def build_evidence_pack(selected_articles: List[Any]) -> List[Dict[str, Any]]:
-    """Format articles into evidence pack structure with trimmed excerpts"""
+    """Format articles into evidence pack structure with expanded excerpts for better summarization"""
     evidence_pack = []
     
     for i, article in enumerate(selected_articles, 1):
-        # Trim excerpt to 500 chars to avoid token bloat
-        excerpt = truncate_text(getattr(article, 'summary', ''), max_length=500)
+        # Increase excerpt length for more detailed summarization
+        excerpt = truncate_text(getattr(article, 'summary', ''), max_length=800)
         
         evidence = {
             "id": i,
@@ -212,3 +245,58 @@ Please analyze these sources and provide a comprehensive summary following the g
                 "watch": [],
                 "evidence_pack": build_evidence_pack(selected_articles) if selected_articles else []
             }
+
+
+# New convenience functions with env-driven models
+async def summarize_en(evidence: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Summarize with strict per-sentence citations. Evidence is a list of dicts
+    with keys: outlet, title, published_at, excerpt, url. Returns JSON with
+    keys: summary_en, disagreement, single_source, notes.
+    """
+    if not evidence:
+        return {"summary_en": "", "disagreement": False, "single_source": False, "notes": ""}
+
+    # Format evidence with numeric IDs
+    evidence_text = ""
+    for i, item in enumerate(evidence, start=1):
+        published_date = item.get("published_at") or "Unknown date"
+        try:
+            if isinstance(published_date, str) and published_date not in ("", "Unknown date"):
+                dt = datetime.fromisoformat(str(published_date).replace('Z', '+00:00'))
+                published_date = dt.strftime('%Y-%m-%d %H:%M UTC')
+        except Exception:
+            pass
+        excerpt = truncate_text(item.get("excerpt", ""), max_length=800)
+        evidence_text += f"""[{i}] {item.get('title','Untitled')}
+Outlet: {item.get('outlet','Unknown')}
+Published: {published_date}
+Excerpt: {excerpt}
+URL: {item.get('url','')}
+
+"""
+
+    prompt = f"""Summarize only using the sources below. Use [n] citation markers.
+
+{evidence_text}
+
+Return strict JSON only.
+"""
+
+    client = OpenAIClient()
+    # Use summarizer model if provided
+    client.model = os.getenv("OPENAI_SUMMARIZER_MODEL", client.model)
+    return await client.chat_json(prompt, CITATION_STRICT_SUMMARY_SYSTEM)
+
+
+async def translate_bn(summary_en: str) -> Dict[str, Any]:
+    """Translate English summary to Bangla, preserving [n] citation markers and entities."""
+    if not summary_en:
+        return {"summary_bn": ""}
+
+    prompt = f"""Translate to Bangla while preserving [n] exactly:
+
+{summary_en}
+"""
+    client = OpenAIClient()
+    client.model = os.getenv("OPENAI_TRANSLATOR_MODEL", client.model)
+    return await client.chat_json(prompt, CITED_EN_TO_BN_TRANSLATION_SYSTEM)

@@ -15,6 +15,8 @@ import re
 # Add packages to path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 from packages.util.normalize import normalize_text, clean_title, extract_domain, truncate_text, clean_text, fingerprint
+from packages.db.repo import upsert_article, fetch_recent_candidates, upsert_embedding, init_db
+from packages.nlp.embed import embed_text
 
 class Feed(BaseModel):
     name: str
@@ -200,7 +202,13 @@ def normalize_item(raw: RawItem, source_name: str) -> Article:
     )
 
 def gather_candidates(query: str = "", window_hours: int = 72, max_items: int = 200) -> List[Article]:
-    """Gather and normalize recent articles from all RSS feeds"""
+    """Gather and normalize recent articles from all RSS feeds, storing them in database"""
+    
+    # Initialize database if needed
+    try:
+        init_db()
+    except Exception as e:
+        print(f"Warning: Could not initialize database: {e}")
     
     # Load RSS sources
     feeds = load_sources()
@@ -219,6 +227,7 @@ def gather_candidates(query: str = "", window_hours: int = 72, max_items: int = 
     feeds_hit = 0
     items_parsed = 0
     unique_articles = 0
+    inserted_to_db = 0
     
     for feed in feeds:
         try:
@@ -257,6 +266,37 @@ def gather_candidates(query: str = "", window_hours: int = 72, max_items: int = 
                     all_articles.append(article)
                     unique_articles += 1
                     
+                    # Store in database
+                    try:
+                        db_article = {
+                            "url": article.url,
+                            "title": article.title,
+                            "source": article.source,
+                            "source_category": article.domain,  # Map domain to source_category
+                            "summary": article.summary,
+                            "published_at": article.published_at
+                        }
+                        article_id = upsert_article(db_article)
+                        inserted_to_db += 1
+                        
+                        # Generate embedding for new articles
+                        content_for_embedding = ""
+                        if article.title:
+                            content_for_embedding += article.title
+                        if article.summary:
+                            content_for_embedding += " " + article.summary
+                        
+                        if content_for_embedding.strip():
+                            try:
+                                embedding = embed_text(content_for_embedding.strip())
+                                if embedding and len(embedding) == 1536:
+                                    upsert_embedding(article_id, embedding)
+                            except Exception as e:
+                                print(f"Warning: Failed to generate embedding for {article.url}: {e}")
+                    
+                    except Exception as e:
+                        print(f"Warning: Failed to save article to database {article.url}: {e}")
+                    
                     # Stop if we've reached max items
                     if len(all_articles) >= max_items:
                         break
@@ -275,12 +315,12 @@ def gather_candidates(query: str = "", window_hours: int = 72, max_items: int = 
             continue
     
     # Log ingestion statistics
-    print(f"Ingestion stats: {feeds_hit}/{len(feeds)} feeds hit, {items_parsed} items parsed, {unique_articles} unique articles kept")
+    print(f"Ingestion stats: {feeds_hit}/{len(feeds)} feeds hit, {items_parsed} items parsed, {unique_articles} unique articles kept, {inserted_to_db} saved to database")
     
     # Sort by published date (most recent first)
     all_articles.sort(key=lambda x: x.published_at or "1970-01-01T00:00:00Z", reverse=True)
     
-    # Save to cache
+    # Save to cache as backup (keep for backward compatibility)
     save_to_cache(all_articles[:max_items])
     
     return all_articles[:max_items]
@@ -302,8 +342,39 @@ def save_to_cache(articles: List[Article]):
         print(f"Error saving to cache: {e}")
 
 def load_from_cache() -> List[Article]:
-    """Load articles from JSON cache file"""
+    """Load articles from database, with fallback to JSON cache file"""
     try:
+        # First try to load from database
+        try:
+            init_db()
+            db_articles = fetch_recent_candidates(window_hours=72, limit=800)
+            
+            if db_articles:
+                # Convert database articles to Article objects
+                articles = []
+                for db_article in db_articles:
+                    try:
+                        article = Article(
+                            title=db_article.title,
+                            url=db_article.url,
+                            source=db_article.source,
+                            published_at=db_article.published_at.isoformat() if db_article.published_at else None,
+                            summary=db_article.summary or "",
+                            domain=extract_domain(db_article.url),
+                            fp_title=fingerprint(db_article.title)
+                        )
+                        articles.append(article)
+                    except Exception as e:
+                        print(f"Warning: Failed to convert database article: {e}")
+                        continue
+                
+                print(f"Loaded {len(articles)} articles from database")
+                return articles
+        
+        except Exception as e:
+            print(f"Warning: Failed to load from database, falling back to JSON cache: {e}")
+    
+        # Fallback to JSON cache
         cache_file = Path(__file__).parent.parent.parent / "data" / "cache" / "latest.json"
         
         if not cache_file.exists():
@@ -311,7 +382,9 @@ def load_from_cache() -> List[Article]:
         
         with open(cache_file, 'r', encoding='utf-8') as f:
             articles_data = json.load(f)
-            return [Article(**data) for data in articles_data]
+            articles = [Article(**data) for data in articles_data]
+            print(f"Loaded {len(articles)} articles from JSON cache")
+            return articles
             
     except Exception as e:
         print(f"Error loading from cache: {e}")

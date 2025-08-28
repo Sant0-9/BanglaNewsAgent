@@ -3,6 +3,12 @@ from typing import Dict, List, Optional
 
 # Intent keywords with English and Bangla synonyms
 INTENT_PATTERNS = {
+    "news": [
+        # English
+        "news", "headline", "headlines", "latest", "breaking", "update", "updates",
+        # Bangla
+        "খবর", "সংবাদ", "আপডেট", "তাজা", "ব্রেকিং"
+    ],
     "weather": [
         # English
         "weather", "forecast", "temperature", "temp", "rain", "sunny", "cloudy", 
@@ -185,8 +191,9 @@ def classify(query: str) -> Dict:
     max_score = max(intent_scores.values())
     best_intents = [intent for intent, score in intent_scores.items() if score == max_score]
     
-    # Tie-breaking priority: weather > markets > sports > lookup > news
-    priority_order = ["weather", "markets", "sports", "lookup", "news"]
+    # Tie-breaking priority: prefer topical news over lookup when ambiguous
+    # weather > markets > sports > news > lookup
+    priority_order = ["weather", "markets", "sports", "news", "lookup"]
     
     chosen_intent = "news"  # default
     for intent in priority_order:

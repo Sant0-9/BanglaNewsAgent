@@ -1,29 +1,56 @@
 # KhoborAgent
 
-A minimal backend for RSS news aggregation with keyword ranking, summary generation with inline citations, and translation to Bangla.
+A minimal backend for RSS news aggregation with PostgreSQL storage, pgvector similarity search, keyword ranking, summary generation with inline citations, and translation to Bangla.
 
 ## Quick Start
 
 ```bash
-# Setup environment
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+# Complete setup using Makefile
+make dev
 
-# Configure environment
-cp .env.example .env  # set required environment variables
+# Or manual setup:
+# 1. Start database
+make db-up
 
-# Start API server (optional)
-uvicorn apps.api.main:app --reload --port 8000
+# 2. Install dependencies
+make install
+
+# 3. Run migrations
+make db-migrate
+
+# 4. Backfill existing JSON data (optional)
+make db-backfill
+
+# 5. Start API server
+make api
 
 # Use CLI directly (no server needed)
 python scripts/ask.py "বিটকয়েনের সর্বশেষ কী"
 ```
 
+## Database Setup
+
+KhoborAgent uses PostgreSQL with pgvector for efficient similarity search:
+
+```bash
+# Start PostgreSQL with Docker
+docker-compose -f docker-compose.db.yml up -d
+
+# Run database migrations
+alembic upgrade head
+
+# Migrate existing JSON cache to database
+python scripts/migrate_json_to_db.py
+
+# Check database connection
+make check-db
+```
+
 ## API Usage
 
-The API provides a single endpoint for news queries:
+### Query Endpoint
 
-**POST /ask**
+**POST /ask** - Main query endpoint with intelligent routing
 ```json
 {
   "query": "semiconductor export controls",
@@ -46,6 +73,23 @@ The API provides a single endpoint for news queries:
 }
 ```
 
+### Database API Endpoints
+
+**GET /api/articles** - Get recent articles from database
+```bash
+curl "http://localhost:8000/api/articles?limit=10"
+```
+
+**GET /api/articles/search** - Search articles by keyword
+```bash
+curl "http://localhost:8000/api/articles/search?q=technology&limit=10"
+```
+
+**GET /api/articles/similar** - Find similar articles using vector search
+```bash
+curl "http://localhost:8000/api/articles/similar?q=artificial intelligence&limit=5"
+```
+
 ## CLI Usage
 
 Direct command-line usage without running a server:
@@ -63,13 +107,16 @@ Output includes:
 
 ## Features
 
-- **RSS Ingestion**: 18 curated feeds (global + Bangladesh)
+- **PostgreSQL Storage**: Robust database with pgvector for similarity search
+- **RSS Ingestion**: 18 curated feeds (global + Bangladesh) with automatic processing
+- **Vector Search**: Semantic similarity search using OpenAI embeddings
 - **Smart Ranking**: Keyword relevance + time decay scoring
 - **Processing**: Model-based summarization and translation
 - **Citation Integrity**: Inline source references [1][2][3]
 - **Source Diversity**: Domain-based deduplication
 - **Bilingual Output**: English and Bangla summaries
-- **JSON Caching**: Disk-based article persistence
+- **Query Logging**: All user queries and responses logged for analysis
+- **JSON Fallback**: Backward compatibility with existing JSON cache
 
 ## Demo (one command)
 
@@ -89,3 +136,54 @@ This command will:
 - Check http://localhost:8000/healthz
 - If CORS errors, confirm CORSMiddleware is enabled
 - If UI shows nothing, verify Network tab requests hit localhost:8000
+
+## Development Workflow
+
+### Common Commands
+
+```bash
+# Full development setup
+make dev
+
+# Database management  
+make db-up            # Start PostgreSQL
+make db-down          # Stop PostgreSQL
+make db-migrate       # Run migrations
+make db-backfill      # Import JSON data
+make db-reset         # Reset database (WARNING: destroys data)
+
+# Development
+make api              # Start API server
+make test-ingest      # Test RSS ingestion
+make check-db         # Verify database connection
+
+# Migration management
+make db-migrate-create MSG="Description"  # Create new migration
+alembic upgrade head                      # Apply migrations
+alembic downgrade -1                      # Rollback one migration
+```
+
+### Database Schema
+
+The application uses these main tables:
+- **articles**: News articles with metadata and summaries
+- **article_vectors**: pgvector embeddings for similarity search
+- **sources**: RSS feed source configuration  
+- **query_logs**: User queries and responses for analytics
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+- `DATABASE_URL`: PostgreSQL connection string
+- `OPENAI_API_KEY`: Required for embeddings and summarization
+- `INGEST_INTERVAL_MIN`: RSS feed refresh interval
+
+### Migration from JSON Cache
+
+Existing JSON cache files are automatically migrated to PostgreSQL:
+
+```bash
+python scripts/migrate_json_to_db.py
+```
+
+The system maintains backward compatibility - if database is unavailable, it falls back to JSON cache files.

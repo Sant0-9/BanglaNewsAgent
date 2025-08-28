@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>KhoborAgent API Test</h1>
+    <div>
+        <textarea id="query" placeholder="Type your message..." rows="4" cols="50"></textarea><br><br>
+        <button id="sendBtn">Send</button>
+        <button id="testConnectionBtn">Test Connection</button>
+    </div>
+    <div id="result"></div>
+    
+    <script>
+        const queryInput = document.getElementById('query');
+        const sendBtn = document.getElementById('sendBtn');
+        const testBtn = document.getElementById('testConnectionBtn');
+        const resultDiv = document.getElementById('result');
+        
+        // Update button state based on input
+        queryInput.addEventListener('input', function() {
+            sendBtn.disabled = this.value.trim().length === 0;
+        });
+        
+        // Initial state
+        sendBtn.disabled = true;
+        
+        // Test API connection
+        testBtn.addEventListener('click', async function() {
+            resultDiv.innerHTML = 'Testing API connection...';
+            try {
+                const response = await fetch('http://localhost:8000/healthz');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<p style="color: green;">API Connection: SUCCESS</p><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: red;">API Connection: FAILED (${response.status})</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">API Connection: ERROR - ${error.message}</p>`;
+            }
+        });
+        
+        // Send query
+        sendBtn.addEventListener('click', async function() {
+            const query = queryInput.value.trim();
+            if (!query) return;
+            
+            sendBtn.disabled = true;
+            resultDiv.innerHTML = 'Sending query...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        lang: 'bn',
+                        mode: 'brief'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <h3>Success!</h3>
+                        <p><strong>Query:</strong> ${query}</p>
+                        <p><strong>Answer (Bengali):</strong> ${data.answer_bn}</p>
+                        <p><strong>Answer (English):</strong> ${data.answer_en || 'Not available'}</p>
+                        <p><strong>Sources:</strong> ${data.sources.length}</p>
+                        <details>
+                            <summary>Full Response</summary>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </details>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${response.status} - ${errorText}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Network Error: ${error.message}</p>`;
+            } finally {
+                sendBtn.disabled = queryInput.value.trim().length === 0;
+            }
+        });
+        
+        // Test connection on load
+        window.addEventListener('load', function() {
+            testBtn.click();
+        });
+    </script>
+</body>
+</html>

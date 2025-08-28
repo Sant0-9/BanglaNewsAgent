@@ -93,7 +93,7 @@ test.describe('Responsive Design and Cross-Device Tests', () => {
     
     // Wait for messages to appear
     await expect(page.locator('text=Mobile layout test message that is quite long to test wrapping')).toBeVisible();
-    await expect(page.locator('text=This is a longer response to test mobile layout')).toBeVisible();
+    await expect(page.getByText('This is a longer response to test mobile layout', { exact: false })).toBeVisible();
     
     // Action buttons should be visible and functional on mobile
     await expect(page.getByRole('button', { name: 'Deep Dive' })).toBeVisible();

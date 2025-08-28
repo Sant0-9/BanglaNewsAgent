@@ -2,7 +2,7 @@
   "name": "khoboragent",
   "private": true,
   "scripts": {
-    "demo": "bash scripts/dev.sh",
+    "demo": "SUDO_PASSWORD=109090 bash scripts/dev.sh",
     "stop": "pkill -f 'uvicorn apps.api.main:app' || true && pkill -f 'next dev' || true"
   }
 }

@@ -98,9 +98,14 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
     if not subject:
         end_time = datetime.now()
         latency_ms = int((end_time - start_time).total_seconds() * 1000)
-        
+        # Localized fallback
+        if (lang or "bn").lower() == "en":
+            not_clear = "The lookup subject is unclear. Please ask a more specific question."
+        else:
+            not_clear = "অনুসন্ধানের বিষয় স্পষ্ট নয়। অনুগ্রহ করে আরো সুনির্দিষ্ট প্রশ্ন করুন।"
+
         return {
-            "answer_bn": "অনুসন্ধানের বিষয় স্পষ্ট নয়। অনুগ্রহ করে আরো সুনির্দিষ্ট প্রশ্ন করুন।",
+            "answer_bn": not_clear,
             "sources": [],
             "flags": {"single_source": False, "disagreement": False},
             "metrics": {
@@ -121,9 +126,13 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
         if not wiki_data or not wiki_data.get("extract"):
             end_time = datetime.now()
             latency_ms = int((end_time - start_time).total_seconds() * 1000)
-            
+            if (lang or "bn").lower() == "en":
+                not_found = f"No information found on Wikipedia about '{subject}'."
+            else:
+                not_found = f"'{subject}' সম্পর্কে Wikipedia-তে কোন তথ্য পাওয়া যায়নি।"
+
             return {
-                "answer_bn": f"'{subject}' সম্পর্কে Wikipedia-তে কোন তথ্য পাওয়া যায়নি।",
+                "answer_bn": not_found,
                 "sources": [],
                 "flags": {"single_source": False, "disagreement": False},
                 "metrics": {
@@ -167,8 +176,12 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
         end_time = datetime.now()
         latency_ms = int((end_time - start_time).total_seconds() * 1000)
         
+        if (lang or "bn").lower() == "en":
+            err_text = f"There was a problem fetching information about '{subject}'."
+        else:
+            err_text = f"'{subject}' সম্পর্কে তথ্য খোঁজায় সমস্যা হয়েছে।"
         return {
-            "answer_bn": f"'{subject}' সম্পর্কে তথ্য খোঁজায় সমস্যা হয়েছে। ত্রুটি: {str(e)}",
+            "answer_bn": err_text,
             "sources": [],
             "flags": {"single_source": False, "disagreement": False},
             "metrics": {

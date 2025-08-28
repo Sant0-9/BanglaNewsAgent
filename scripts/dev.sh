@@ -16,6 +16,25 @@ source "$ROOT/.venv/bin/activate"
 pip -q install --upgrade pip >/dev/null
 pip -q install -r "$ROOT/requirements.txt"
 
+echo "> Start Postgres (docker compose)"
+if command -v docker >/dev/null 2>&1; then
+  # Try docker compose, fall back to sudo if needed
+  if ! docker compose -f "$ROOT/docker-compose.db.yml" up -d 2>/dev/null; then
+    echo "! Need sudo for docker, trying with sudo..."
+    if [ -n "$SUDO_PASSWORD" ]; then
+      echo "$SUDO_PASSWORD" | sudo -S docker compose -f "$ROOT/docker-compose.db.yml" up -d
+    else
+      sudo docker compose -f "$ROOT/docker-compose.db.yml" up -d
+    fi
+  fi
+else
+  echo "! docker not found; skipping DB startup" >&2
+fi
+
+echo "> Run database migrations"
+sleep 3  # Wait for postgres to start
+alembic upgrade head || echo "! Migration failed, database might already be up to date"
+
 echo "> Export front-end API base URL"
 export NEXT_PUBLIC_API_BASE_URL="http://localhost:${API_PORT}"
 
@@ -23,7 +42,7 @@ cleanup() { echo; echo "Stopping..."; kill ${API_PID:-0} ${WEB_PID:-0} 2>/dev/nu
 trap cleanup EXIT
 
 echo "> Launch FastAPI :$API_PORT"
-uvicorn apps.api.main:app --host 0.0.0.0 --port ${API_PORT} --reload &
+uvicorn apps.api.main:app --host 0.0.0.0 --port ${API_PORT} --reload --reload-exclude ".pgdata/*" &
 API_PID=$!
 
 echo "> Launch Next.js :$WEB_PORT"
@@ -37,17 +56,33 @@ WEB_PID=$!
 
 sleep 2
 
+echo "> Wait for API to be ready..."
+for i in {1..60}; do
+  if curl -s "http://localhost:${API_PORT}/healthz" >/dev/null; then break; fi
+  sleep 1
+done
+
 # Open browser (Linux/macOS) unless disabled
 if [ "$OPEN_BROWSER" = "1" ]; then
   if command -v xdg-open >/dev/null 2>&1; then xdg-open "http://localhost:${WEB_PORT}" >/dev/null 2>&1 || true; fi
   if command -v open >/dev/null 2>&1; then open "http://localhost:${WEB_PORT}" >/dev/null 2>&1 || true; fi
 fi
 
-echo "> Prewarming demo queries"
+echo "> Prewarming demo queries (6 total: EN & BN)"
+# EN queries
 curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
-  -d '{"query":"latest on semiconductor export controls","lang":"bn"}' >/dev/null || true
+  -d '{"query":"google translate new feature","lang":"en"}' >/dev/null || true
 curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
-  -d '{"query":"Bangladesh inflation this week","lang":"bn"}' >/dev/null || true
+  -d '{"query":"latest on semiconductor export controls","lang":"en"}' >/dev/null || true
+curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
+  -d '{"query":"Bangladesh inflation this week","lang":"en"}' >/dev/null || true
+# BN queries
+curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
+  -d '{"query":"গুগল ট্রান্সলেটের নতুন ফিচার","lang":"bn"}' >/dev/null || true
+curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
+  -d '{"query":"সেমিকন্ডাক্টর রপ্তানি নিয়ন্ত্রণের সর্বশেষ আপডেট","lang":"bn"}' >/dev/null || true
+curl -s -X POST "http://localhost:${API_PORT}/ask" -H "content-type: application/json" \
+  -d '{"query":"বাংলাদেশে মুদ্রাস্ফীতির সাম্প্রতিক খবর","lang":"bn"}' >/dev/null || true
 
 echo "KhoborAgent running — Ctrl+C to stop"
 wait

@@ -2,55 +2,73 @@ feeds:
   - name: BBC World
     url: https://feeds.bbci.co.uk/news/world/rss.xml
     country: INT
+    category: general
   - name: Reuters World
     url: https://www.reuters.com/world/rss
     country: INT
+    category: general
   - name: AP Top
     url: https://apnews.com/hub/ap-top-news?rss=1
     country: INT
+    category: general
   - name: Al Jazeera
     url: https://www.aljazeera.com/xml/rss/all.xml
     country: INT
+    category: general
   - name: The Verge
     url: https://www.theverge.com/rss/index.xml
     country: INT
+    category: tech
   - name: TechCrunch
     url: https://techcrunch.com/feed/
     country: INT
+    category: tech
   - name: Ars Technica
     url: http://feeds.arstechnica.com/arstechnica/index
     country: INT
+    category: tech
   - name: Yahoo Finance Top
     url: https://finance.yahoo.com/news/rss
     country: INT
+    category: finance
   - name: CNN International
     url: http://rss.cnn.com/rss/edition.rss
     country: INT
+    category: general
   - name: NPR Top Stories
     url: https://feeds.npr.org/1001/rss.xml
     country: INT
+    category: general
   - name: Guardian World
     url: https://www.theguardian.com/world/rss
     country: INT
+    category: general
   - name: Hacker News
     url: https://hnrss.org/frontpage
     country: INT
+    category: tech
   - name: The Daily Star (BD)
     url: https://www.thedailystar.net/rss/all
     country: BD
+    category: general
   - name: Dhaka Tribune
     url: https://www.dhakatribune.com/feed
     country: BD
+    category: general
   - name: bdnews24 (top)
     url: https://bdnews24.com/?widgetName=rssfeed&widgetId=1150&getXmlFeed=true
     country: BD
+    category: general
   - name: New Age (BD)
     url: https://www.newagebd.net/rss
     country: BD
+    category: general
   - name: United News (BD)
     url: https://unb.com.bd/feed
     country: BD
+    category: general
   - name: Financial Express (BD)
     url: https://thefinancialexpress.com.bd/rss.xml
     country: BD
+    category: finance
 # TODO: add more sources later (Prothom Alo public pages, etc.)

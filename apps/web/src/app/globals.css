@@ -1,52 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
 @tailwind base;
-@tailwind components;
+@tailwind components; 
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 17% 95%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 142.1 76.2% 36.3%;
+    /* Dark-first theme - Default to dark */
+    --background: 219 25% 6%; /* #0B0F1A */
+    --foreground: 215 25% 92%; /* #E7ECF3 */
+    --card: 218 20% 9%; /* #0F1523 */
+    --card-foreground: 215 25% 92%; /* #E7ECF3 */
+    --popover: 218 20% 9%; /* #0F1523 */
+    --popover-foreground: 215 25% 92%; /* #E7ECF3 */
+    --primary: 263 84% 58%; /* #7C3AED - Purple accent */
+    --primary-foreground: 215 25% 92%; /* #E7ECF3 */
+    --secondary: 217 15% 17%; /* #1E2637 */
+    --secondary-foreground: 215 25% 92%; /* #E7ECF3 */
+    --muted: 217 15% 17%; /* #1E2637 */
+    --muted-foreground: 215 15% 70%; /* #A5B0C2 */
+    --accent: 192 95% 43%; /* #06B6D4 - Cyan accent */
+    --accent-foreground: 215 25% 92%; /* #E7ECF3 */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 215 25% 92%;
+    --border: 217 15% 17%; /* #1E2637 */
+    --input: 217 15% 17%; /* #1E2637 */
+    --ring: 263 84% 58%; /* #7C3AED */
     --radius: 0.75rem;
+    
+    /* Alternative theme colors */
+    --alt-background: 257 47% 7%; /* #090826 */
+    --alt-accent: 44 44% 58%; /* #CBA35D - Gold */
   }
 
-  .dark {
-    --background: 240 25% 3%; /* #090826 */
-    --foreground: 60 9.1% 97.8%;
-    --card: 240 20% 6%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 240 20% 6%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 47 96% 89%; /* Gold accent #d3b673 */
-    --primary-foreground: 240 25% 3%;
-    --secondary: 240 15% 11%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 240 15% 11%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 15% 11%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 240 15% 15%;
-    --input: 240 15% 15%;
-    --ring: 47 96% 89%;
+  .light {
+    /* Light theme overrides */
+    --background: 0 0% 100%; /* White */
+    --foreground: 240 10% 4%; /* Dark text */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --primary: 263 84% 58%; /* Keep purple accent */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%; /* Light gray */
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 192 95% 43%; /* Keep cyan accent */
+    --accent-foreground: 0 0% 100%;
+    --border: 240 6% 90%; /* Light border */
+    --input: 240 6% 90%;
+    --ring: 263 84% 58%;
   }
 }
 
@@ -54,44 +58,54 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    color-scheme: dark light;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-inter), 'Noto Sans Bengali', system-ui, sans-serif;
   }
   
   /* Bangla font support */
   [lang="bn"], .bangla {
-    font-family: 'Noto Sans Bengali', system-ui, sans-serif !important;
+    font-family: 'Noto Sans Bengali', var(--font-inter), system-ui, sans-serif !important;
     font-feature-settings: normal;
   }
   
-  /* Light theme for modern design */
-  html {
-    color-scheme: light;
-  }
-  
-  body {
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #dbeafe 100%);
-    background-attachment: fixed;
-  }
-  
-  /* Custom scrollbar */
+  /* Custom scrollbar - dark theme */
   ::-webkit-scrollbar {
     width: 8px;
   }
   
   ::-webkit-scrollbar-track {
-    background: rgba(248, 250, 252, 0.5);
+    background: hsl(var(--muted));
     border-radius: 4px;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
     border-radius: 4px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    opacity: 0.8;
+  }
+  
+  /* Light theme scrollbar */
+  .light ::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 

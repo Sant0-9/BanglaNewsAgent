@@ -53,27 +53,16 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom KhoborAgent theme
-        brand: {
-          50: '#fefce8',
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',
-          500: '#d3b673', // Primary gold
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e',
-          900: '#713f12',
-          950: '#422006',
-        },
-        dark: {
-          950: '#090826', // Primary background
-          900: '#0f0f35',
-          800: '#1a1a4a',
-          700: '#25255f',
-          600: '#303074',
-        }
+        // New dark-first KhoborAgent theme
+        'bg-primary': '#0B0F1A',      // Main background
+        'surface': '#0F1523',         // Card/surface background  
+        'border-primary': '#1E2637',  // Border color
+        'text-primary': '#E7ECF3',    // Primary text
+        'text-muted': '#A5B0C2',      // Muted/secondary text
+        'accent-start': '#7C3AED',    // Gradient start (purple)
+        'accent-end': '#06B6D4',      // Gradient end (cyan)
+        'alt-bg': '#090826',          // Alternative base
+        'alt-accent': '#CBA35D',      // Alternative gold accent
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -121,7 +110,7 @@ const config = {
         'noise': 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.1\'/%3E%3C/svg%3E")',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'Noto Sans Bengali', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Noto Sans Bengali', 'system-ui', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'Consolas', 'monospace'],
         bengali: ['Noto Sans Bengali', 'system-ui', 'sans-serif'],
       },

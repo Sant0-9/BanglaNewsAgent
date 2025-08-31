@@ -4,8 +4,15 @@ Weather handler for weather-related queries
 import asyncio
 import httpx
 import os
+import sys
+from pathlib import Path
 from typing import Dict, Any
 from datetime import datetime
+
+# Add packages to path
+sys.path.append(str(Path(__file__).parent.parent))
+
+from util.rate_limiter import api_manager
 
 
 class WeatherClient:
@@ -15,8 +22,29 @@ class WeatherClient:
         self.api_key = os.getenv("WEATHER_API_KEY")
         self.base_url = "https://api.openweathermap.org/data/2.5"
     
+    async def _fetch_weather_data(self, location: str) -> Dict[str, Any]:
+        """Internal method to fetch weather data from API."""
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            params = {
+                "q": location,
+                "appid": self.api_key,
+                "units": "metric"
+            }
+            response = await client.get(f"{self.base_url}/weather", params=params)
+            response.raise_for_status()
+            data = response.json()
+            
+            return {
+                "location": data["name"],
+                "temperature": round(data["main"]["temp"]),
+                "condition": data["weather"][0]["description"].title(),
+                "humidity": data["main"]["humidity"],
+                "wind_speed": round(data["wind"]["speed"] * 3.6),  # Convert to km/h
+                "source": "OpenWeatherMap"
+            }
+
     async def get_weather(self, location: str) -> Dict[str, Any]:
-        """Get current weather for location (stub implementation)"""
+        """Get current weather for location with rate limiting and caching."""
         if not self.api_key:
             return {
                 "location": location,
@@ -24,38 +52,32 @@ class WeatherClient:
                 "condition": "Partly Cloudy",
                 "humidity": 65,
                 "wind_speed": 12,
-                "source": "OpenWeatherMap"
+                "source": "OpenWeatherMap (no API key)"
             }
         
-        try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                params = {
-                    "q": location,
-                    "appid": self.api_key,
-                    "units": "metric"
-                }
-                response = await client.get(f"{self.base_url}/weather", params=params)
-                response.raise_for_status()
-                data = response.json()
-                
-                return {
-                    "location": data["name"],
-                    "temperature": round(data["main"]["temp"]),
-                    "condition": data["weather"][0]["description"].title(),
-                    "humidity": data["main"]["humidity"],
-                    "wind_speed": round(data["wind"]["speed"] * 3.6),  # Convert to km/h
-                    "source": "OpenWeatherMap"
-                }
-        except Exception:
-            # Fallback to stub data
+        # Use rate limiter and cache
+        result = await api_manager.call_with_protection(
+            api_type="weather",
+            api_function=self._fetch_weather_data,
+            cache_key_params={"location": location.lower()},
+            location=location
+        )
+        
+        # Handle error cases gracefully
+        if result.get("_error") or result.get("_rate_limited"):
             return {
                 "location": location,
                 "temperature": 28,
-                "condition": "Partly Cloudy", 
+                "condition": "Partly Cloudy",
                 "humidity": 65,
                 "wind_speed": 12,
-                "source": "OpenWeatherMap (stub)"
+                "source": "OpenWeatherMap (fallback)",
+                "_api_error": result.get("_error"),
+                "_rate_limited": result.get("_rate_limited", False),
+                "_cache_used": result.get("_cache_hit", False)
             }
+        
+        return result
 
 
 async def handle(query: str, slots: dict, lang: str = "bn") -> dict:

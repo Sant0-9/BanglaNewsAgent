@@ -1,11 +1,13 @@
 import time
 import hashlib
+import asyncio
 from typing import Any, Dict, Optional, Tuple
+from packages.util.redis_cache import get_cache, RedisCache
 
-TTL_SECONDS_DEFAULT = 900  # 15 minutes
+TTL_SECONDS_DEFAULT = 300  # 5 minutes (reduced from 15 for more dynamic caching)
 
-# Simple in-memory cache: key -> (value, expires_at)
-_CACHE: Dict[str, Tuple[Any, float]] = {}
+# Fallback in-memory cache if Redis is unavailable
+_FALLBACK_CACHE: Dict[str, Tuple[Any, float]] = {}
 
 
 def _now() -> float:
@@ -22,48 +24,112 @@ def _make_key(key: str) -> str:
     return hashlib.md5(key.encode('utf-8')).hexdigest()
 
 
-def create_query_cache_key(query: str, lang: str, window_hours: int, timestamp_minutes: Optional[int] = None) -> str:
-    """Create a more sophisticated cache key that preserves query uniqueness
+def create_query_cache_key(
+    query: str, 
+    lang: str, 
+    window_hours: int, 
+    region: Optional[str] = None,
+    story_id: Optional[str] = None
+) -> str:
+    """
+    Create cache key for Redis-based caching.
     
     Args:
         query: The original query string
-        lang: Language preference
+        lang: Language preference  
         window_hours: Time window for search
-        timestamp_minutes: Optional timestamp in minutes for time-based uniqueness
+        region: Regional filter
+        story_id: Story cluster ID
     """
-    # Normalize query while preserving uniqueness
-    normalized_query = query.strip().lower()
-    
-    # Add timestamp component to prevent over-caching for evolving news
-    if timestamp_minutes is None:
-        # Use 30-minute windows to balance caching and freshness
-        timestamp_minutes = int(time.time() / 60 / 30)
-    
-    # Create comprehensive key that maintains uniqueness
-    key_components = [
-        "ask",
-        "v2",  # Increment version to invalidate old cache
-        normalized_query,
-        lang,
-        str(window_hours),
-        str(timestamp_minutes)
-    ]
-    
-    return ":".join(key_components)
+    # This function now delegates to Redis cache key creation
+    # but maintains backward compatibility for existing code
+    return f"news:{query}:{lang}:{window_hours}:{region or ''}:{story_id or ''}"
 
 
+# Async Redis-based functions
+async def get_async(
+    mode: str,
+    query: str, 
+    lang: str = "bn",
+    window_hours: Optional[int] = None,
+    region: Optional[str] = None,
+    story_id: Optional[str] = None
+) -> Tuple[Optional[Any], bool]:
+    """
+    Async get from Redis cache with fallback.
+    
+    Returns:
+        Tuple of (cached_value, is_cache_hit)
+    """
+    try:
+        cache = await get_cache()
+        result = await cache.get(mode, query, window_hours, region, story_id, lang)
+        return result, result is not None
+    except Exception as e:
+        print(f"[CACHE] Redis error, falling back to memory cache: {e}")
+        # Fallback to memory cache
+        cache_key = create_query_cache_key(query, lang, window_hours or 168, region, story_id)
+        return get(cache_key), False
+
+
+async def set_async(
+    mode: str,
+    query: str,
+    value: Any,
+    lang: str = "bn", 
+    window_hours: Optional[int] = None,
+    region: Optional[str] = None,
+    story_id: Optional[str] = None,
+    is_breaking: bool = False
+) -> bool:
+    """Async set to Redis cache with fallback"""
+    try:
+        cache = await get_cache()
+        return await cache.set(mode, query, value, window_hours, region, story_id, lang, is_breaking)
+    except Exception as e:
+        print(f"[CACHE] Redis error, falling back to memory cache: {e}")
+        # Fallback to memory cache
+        cache_key = create_query_cache_key(query, lang, window_hours or 168, region, story_id)
+        set(cache_key, value)
+        return True
+
+
+# Backward compatibility - synchronous functions with fallback
 def get(key: str) -> Optional[Any]:
+    """Synchronous get from fallback memory cache"""
     k = _make_key(key)
-    item = _CACHE.get(k)
+    item = _FALLBACK_CACHE.get(k)
     if not item:
         return None
     value, exp = item
     if _is_expired(exp):
-        _CACHE.pop(k, None)
+        _FALLBACK_CACHE.pop(k, None)
         return None
     return value
 
 
 def set(key: str, value: Any, ttl_seconds: int = TTL_SECONDS_DEFAULT) -> None:
+    """Synchronous set to fallback memory cache"""
     k = _make_key(key)
-    _CACHE[k] = (value, _now() + float(ttl_seconds))
+    _FALLBACK_CACHE[k] = (value, _now() + float(ttl_seconds))
+
+
+# Convenience functions for negative caching
+async def cache_negative_result(mode: str, query: str, reason: str = "empty_results") -> bool:
+    """Cache a negative result"""
+    try:
+        cache = await get_cache()
+        return await cache.set_negative(mode, query, reason)
+    except Exception as e:
+        print(f"[CACHE] Error caching negative result: {e}")
+        return False
+
+
+async def check_negative_cache(mode: str, query: str) -> Optional[Dict[str, Any]]:
+    """Check for negative cache entry"""
+    try:
+        cache = await get_cache()
+        return await cache.get_negative(mode, query)
+    except Exception as e:
+        print(f"[CACHE] Error checking negative cache: {e}")
+        return None

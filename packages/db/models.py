@@ -1,7 +1,9 @@
 import os
+import sys
 import uuid
 from datetime import datetime
 from typing import Optional
+from pathlib import Path
 
 from sqlalchemy import (
     Column,
@@ -16,6 +18,10 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.types import UserDefinedType
+
+# Add packages to path  
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from packages.config.embedding import config
 
 
 Base = declarative_base()
@@ -73,7 +79,9 @@ class ArticleVector(Base):
     __tablename__ = "article_vectors"
 
     article_id = Column(UUID(as_uuid=True), ForeignKey("articles.id", ondelete="CASCADE"), primary_key=True)
-    embedding = Column(Vector(1536), nullable=False)
+    embedding = Column(Vector(config.dimension), nullable=False)
+    model_name = Column(String(64), nullable=False, default=config.model_name)
+    model_dimension = Column(Integer, nullable=False, default=config.dimension)
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
     article = relationship("Article", back_populates="vector")

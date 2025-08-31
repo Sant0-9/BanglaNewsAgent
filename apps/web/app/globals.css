@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components; 
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Black-Fire theme - Dark-first with warm accents */
+    --background: 0 0% 4%; /* #0A0A0B - charcoal-950 */
+    --foreground: 0 0% 93%; /* #EDEDED - warm white */
+    --card: 0 0% 7%; /* #111113 - charcoal-900 */
+    --card-foreground: 0 0% 93%; /* #EDEDED */
+    --popover: 0 0% 7%; /* #111113 - charcoal-900 */
+    --popover-foreground: 0 0% 93%; /* #EDEDED */
+    --primary: 18 100% 50%; /* #FF4D00 - fire-molten */
+    --primary-foreground: 0 0% 93%; /* #EDEDED */
+    --secondary: 0 0% 17%; /* #2C2C2E - charcoal-700 */
+    --secondary-foreground: 0 0% 93%; /* #EDEDED */
+    --muted: 0 0% 17%; /* #2C2C2E - charcoal-700 */
+    --muted-foreground: 0 0% 62%; /* #9E9EA7 - charcoal-400 */
+    --accent: 33 100% 55%; /* #FF7A1A - fire-ember */
+    --accent-foreground: 0 0% 93%; /* #EDEDED */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 93%;
+    --border: 0 0% 17%; /* #2C2C2E - charcoal-700 */
+    --input: 0 0% 17%; /* #2C2C2E - charcoal-700 */
+    --ring: 18 100% 50%; /* #FF4D00 - fire-molten */
+    --radius: 0.75rem;
+  }
+
+  .light {
+    /* Light theme overrides - Black-Fire theme */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 4%; /* Dark text */
+    --card: 0 0% 100%; /* White cards */
+    --card-foreground: 0 0% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 18 100% 50%; /* fire-molten */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%; /* Light gray */
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 46%;
+    --accent: 33 100% 55%; /* fire-ember */
+    --accent-foreground: 0 0% 100%;
+    --border: 0 0% 90%; /* Light border */
+    --input: 0 0% 90%;
+    --ring: 18 100% 50%; /* fire-molten */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    color-scheme: dark light;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-inter), 'Noto Sans Bengali', system-ui, sans-serif;
+  }
+  
+  /* Bangla font support */
+  [lang="bn"], .bangla {
+    font-family: 'Noto Sans Bengali', var(--font-inter), system-ui, sans-serif !important;
+    font-feature-settings: normal;
+  }
+  
+  /* Custom scrollbar - dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+  }
+  
+  /* Light theme scrollbar */
+  .light ::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Typography improvements */
+@layer components {
+  .prose-custom {
+    @apply prose max-w-none;
+    @apply prose-headings:text-foreground prose-a:text-primary;
+    @apply prose-code:bg-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded;
+    @apply prose-pre:bg-card prose-pre:border prose-pre:border-border;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-fire-gold to-fire-ember bg-clip-text text-transparent;
+  }
+  
+  .glass-morphism {
+    @apply backdrop-blur-md bg-card/70 border border-border/50;
+  }
+}
+
+/* Animation utilities */
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out forwards;
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounceSubtle 2s infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .animate-glass-surface {
+    animation: glass-surface 6s ease-in-out infinite;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes glass-surface {
+  0%, 100% {
+    opacity: 0.2;
+    transform: translateZ(0);
+  }
+  50% {
+    opacity: 0.15;
+    transform: translateZ(1px);
+  }
+}

@@ -53,16 +53,32 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // New dark-first KhoborAgent theme
-        'bg-primary': '#0B0F1A',      // Main background
-        'surface': '#0F1523',         // Card/surface background  
-        'border-primary': '#1E2637',  // Border color
-        'text-primary': '#E7ECF3',    // Primary text
-        'text-muted': '#A5B0C2',      // Muted/secondary text
-        'accent-start': '#7C3AED',    // Gradient start (purple)
-        'accent-end': '#06B6D4',      // Gradient end (cyan)
-        'alt-bg': '#090826',          // Alternative base
-        'alt-accent': '#CBA35D',      // Alternative gold accent
+        // Black-Fire theme tokens
+        'charcoal': {
+          50: '#F8F8F8',
+          100: '#F1F1F3',
+          200: '#E4E4E8',
+          300: '#D1D1D6',
+          400: '#9E9EA7',
+          500: '#6E6E73',
+          600: '#48484A',
+          700: '#2C2C2E',
+          800: '#1C1C1E',
+          900: '#111113',
+          950: '#0A0A0B',
+        },
+        'fire': {
+          molten: '#FF4D00',    // Molten red-orange
+          ember: '#FF7A1A',     // Ember orange
+          amber: '#FFC04D',     // Amber yellow
+          gold: '#FFB800',      // Pure gold
+        },
+        // Legacy tokens for compatibility
+        'bg-primary': '#0A0A0B',      // Updated to charcoal-950
+        'surface': '#111113',         // Updated to charcoal-900
+        'border-primary': '#2C2C2E',  // Updated to charcoal-700
+        'text-primary': '#EDEDED',    // Updated text color
+        'text-muted': '#9E9EA7',      // Updated to charcoal-400
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -106,7 +122,8 @@ const config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'brand-gradient': 'radial-gradient(circle at 30% 20%, rgba(211, 182, 115, 0.15) 0%, rgba(9, 8, 38, 0.8) 50%, rgba(9, 8, 38, 1) 100%)',
+        'brand-gradient': 'radial-gradient(circle at 30% 20%, rgba(255, 77, 0, 0.15) 0%, rgba(17, 17, 19, 0.8) 50%, rgba(10, 10, 11, 1) 100%)',
+        'fire-gradient': 'radial-gradient(circle at 50% 50%, rgba(255, 184, 0, 0.1) 0%, rgba(255, 122, 26, 0.05) 40%, rgba(10, 10, 11, 1) 100%)',
         'noise': 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.1\'/%3E%3C/svg%3E")',
       },
       fontFamily: {

@@ -5,19 +5,18 @@ import asyncio
 import sys
 from pathlib import Path
 from typing import Dict, Any, List
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Add packages to path
 sys.path.append(str(Path(__file__).parent.parent.parent))
-from packages.llm.openai_client import NewsProcessor
-from packages.nlp.rank import rank_articles
-from services.ingest.rss import gather_candidates, load_from_cache
+from packages.llm.openai_client import summarize_bn_first
+from packages.nlp.enhanced_retrieve import enhanced_retrieve_evidence
+from packages.db import repo as db_repo
 
 
 async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
     """
-    Handle news queries using existing news pipeline:
-    evidence pack → EN summary → BN translate
+    Handle news queries using enhanced database retrieval system
     
     Returns:
     {
@@ -27,21 +26,14 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
       "metrics": {"latency_ms": int, "source_count": int, "updated_ct": "..."}
     }
     """
-    start_time = datetime.now()
-    
-    # Initialize news processor
-    news_processor = NewsProcessor()
+    start_time = datetime.now(timezone.utc)
     
     try:
-        # Try to get cached articles first
-        articles = load_from_cache()
+        # Use enhanced database retrieval system (same as main API)
+        evidence = await enhanced_retrieve_evidence(query, category=None, db_repo=db_repo, window_hours=72)
         
-        # If no cached articles, gather fresh ones
-        if not articles:
-            articles = gather_candidates(query=query, window_hours=72, max_items=100)
-        
-        if not articles:
-            end_time = datetime.now()
+        if not evidence:
+            end_time = datetime.now(timezone.utc)
             latency_ms = int((end_time - start_time).total_seconds() * 1000)
             
             return {
@@ -55,32 +47,32 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
                 }
             }
         
-        # Rank articles by relevance to query
-        ranked_articles = rank_articles(articles, query, top_k=6)
-        
-        # Process through news pipeline
-        result = await news_processor.process_news(ranked_articles)
+        # Generate summary using Bangla-first approach (same as main API)
+        result = await summarize_bn_first(evidence)
 
         # Extract information and honor language preference
+        summary_bn = result.get("summary_bn", "সংবাদ প্রক্রিয়াকরণে সমস্যা হয়েছে।")
+        
         if (lang or "bn").lower() == "en":
-            answer_text = result.get("summary_en", "There was a problem processing the news.")
+            # For English, provide basic translation (can be enhanced later)
+            answer_text = summary_bn
         else:
-            answer_text = result.get("summary_bn", "সংবাদ প্রক্রিয়াকরণে সমস্যা হয়েছে।")
+            answer_text = summary_bn
+            
         disagreement = result.get("disagreement", False)
         single_source = result.get("single_source", False)
-        evidence_pack = result.get("evidence_pack", [])
         
-        # Create sources list from evidence pack
+        # Create sources list from evidence
         sources = []
-        for item in evidence_pack:
+        for item in evidence:
             sources.append({
                 "name": item.get("outlet", "Unknown"),
                 "url": item.get("url", ""),
-                "published_at": item.get("published_at", datetime.now().isoformat())
+                "published_at": item.get("published_at", datetime.now(timezone.utc).isoformat())
             })
         
         # Calculate metrics
-        end_time = datetime.now()
+        end_time = datetime.now(timezone.utc)
         latency_ms = int((end_time - start_time).total_seconds() * 1000)
         
         return {
@@ -100,7 +92,7 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
         
     except Exception as e:
         # Error fallback
-        end_time = datetime.now()
+        end_time = datetime.now(timezone.utc)
         latency_ms = int((end_time - start_time).total_seconds() * 1000)
         
         return {

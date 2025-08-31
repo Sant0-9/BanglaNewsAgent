@@ -1,0 +1,12 @@
+{
+  "embedding_model": "text-embedding-3-large",
+  "embedding_dimension": 3072,
+  "chunker_config": {
+    "chunk_size": 1000,
+    "chunk_overlap": 200,
+    "chunker_type": "recursive"
+  },
+  "chunker_hash": "935df038fed9480700306e9f09319ced",
+  "last_updated": "2025-08-31T01:11:30.328530+00:00",
+  "version": "1.0"
+}

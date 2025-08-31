@@ -18,31 +18,41 @@ pip -q install -r "$ROOT/requirements.txt"
 
 echo "> Start Postgres (docker compose)"
 if command -v docker >/dev/null 2>&1; then
-  # Try docker compose, fall back to sudo if needed
+  # Try docker compose; if it fails due to permissions, print guidance instead of using sudo
   if ! docker compose -f "$ROOT/docker-compose.db.yml" up -d 2>/dev/null; then
-    echo "! Need sudo for docker, trying with sudo..."
-    if [ -n "$SUDO_PASSWORD" ]; then
-      echo "$SUDO_PASSWORD" | sudo -S docker compose -f "$ROOT/docker-compose.db.yml" up -d
-    else
-      sudo docker compose -f "$ROOT/docker-compose.db.yml" up -d
-    fi
+    echo "! docker compose failed to start. You may need to run:"
+    echo "  docker compose -f docker-compose.db.yml up -d"
   fi
 else
   echo "! docker not found; skipping DB startup" >&2
 fi
 
 echo "> Run database migrations"
-sleep 3  # Wait for postgres to start
+# Wait a bit more for Postgres to accept connections
+sleep 5
 alembic upgrade head || echo "! Migration failed, database might already be up to date"
 
 echo "> Export front-end API base URL"
 export NEXT_PUBLIC_API_BASE_URL="http://localhost:${API_PORT}"
 
+echo "> Load .env for backend"
+set -a
+if [ -f "$ROOT/.env" ]; then . "$ROOT/.env"; fi
+set +a
+
 cleanup() { echo; echo "Stopping..."; kill ${API_PID:-0} ${WEB_PID:-0} 2>/dev/null || true; }
 trap cleanup EXIT
 
 echo "> Launch FastAPI :$API_PORT"
-uvicorn apps.api.main:app --host 0.0.0.0 --port ${API_PORT} --reload --reload-exclude ".pgdata/*" &
+# Limit reload watch to source dirs and exclude the DB volume directory robustly
+uvicorn apps.api.main:app \
+  --host 0.0.0.0 --port ${API_PORT} \
+  --reload \
+  --reload-dir apps \
+  --reload-dir packages \
+  --reload-exclude ".pgdata" \
+  --reload-exclude ".pgdata/*" \
+  --reload-exclude "**/.pgdata/**" &
 API_PID=$!
 
 echo "> Launch Next.js :$WEB_PORT"

@@ -1,4 +1,7 @@
-.PHONY: help install db-up db-down db-migrate db-backfill dev api clean
+.PHONY: help install db-up db-down db-migrate db-backfill dev api clean db-clean
+
+# Prefer Docker Compose v2 plugin; fall back to docker-compose
+DOCKER_COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -10,10 +13,10 @@ install: ## Install Python dependencies
 	pip install -r requirements.txt
 
 db-up: ## Start PostgreSQL database with Docker
-	docker-compose -f docker-compose.db.yml up -d
+	$(DOCKER_COMPOSE) -f docker-compose.db.yml up -d
 
 db-down: ## Stop PostgreSQL database
-	docker-compose -f docker-compose.db.yml down
+	$(DOCKER_COMPOSE) -f docker-compose.db.yml down
 
 db-migrate: ## Run database migrations
 	alembic upgrade head
@@ -43,10 +46,15 @@ clean: ## Clean up cache files and logs
 # Database utility commands
 db-reset: ## Reset database (WARNING: destroys all data)
 	@echo "This will destroy all data. Are you sure? [y/N]" && read ans && [ $${ans:-N} = y ]
-	docker-compose -f docker-compose.db.yml down -v
-	docker-compose -f docker-compose.db.yml up -d
+	$(DOCKER_COMPOSE) -f docker-compose.db.yml down -v --remove-orphans
+	rm -rf .pgdata
+	$(DOCKER_COMPOSE) -f docker-compose.db.yml up -d --force-recreate
 	sleep 5
 	alembic upgrade head
+
+db-clean: ## Force remove container and local volume folder
+	-$(DOCKER_COMPOSE) -f docker-compose.db.yml down -v --remove-orphans
+	rm -rf ./.pgdata
 
 db-shell: ## Connect to database shell
 	psql -h localhost -U postgres -d khobor

@@ -23,14 +23,7 @@ class QuotesClient:
     async def get_quote(self, ticker: str) -> Dict[str, Any]:
         """Get stock quote (stub implementation)"""
         if not self.api_key:
-            return {
-                "ticker": ticker,
-                "price": 150.25,
-                "change": 2.50,
-                "change_percent": 1.69,
-                "volume": 1000000,
-                "source": "Alpha Vantage"
-            }
+            raise RuntimeError("Alpha Vantage API key not configured")
         
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
@@ -55,16 +48,8 @@ class QuotesClient:
                     "volume": int(quote.get("06. volume", 0)),
                     "source": "Alpha Vantage"
                 }
-        except Exception:
-            # Fallback to stub data
-            return {
-                "ticker": ticker,
-                "price": 150.25,
-                "change": 2.50,
-                "change_percent": 1.69,
-                "volume": 1000000,
-                "source": "Alpha Vantage (stub)"
-            }
+        except Exception as e:
+            raise RuntimeError(f"Quote fetch failed: {e}")
 
 
 async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
@@ -90,10 +75,21 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
     if ticker:
         # Handle as stock quote request
         quotes_client = QuotesClient()
+        from packages.util.rate_limiter import api_manager
         
         try:
-            # Get quote data
-            quote_data = await quotes_client.get_quote(ticker)
+            # Get quote data with rate limiting and short TTL cache
+            wrapped = await api_manager.call_with_protection(
+                api_type="markets",
+                api_function=quotes_client.get_quote,
+                cache_key_params={"ticker": ticker.upper()},
+                retry_count=1,
+                retry_delay=0.5,
+                ticker=ticker.upper(),
+            )
+            if "_error" in wrapped:
+                raise RuntimeError(wrapped["_error"])  # Surface concise error
+            quote_data = wrapped
             
             # Format Bangla answer
             price = quote_data["price"]
@@ -142,7 +138,11 @@ async def handle(query: str, slots: dict, lang: str = "bn") -> dict:
             latency_ms = int((end_time - start_time).total_seconds() * 1000)
             
             return {
-                "answer_bn": f"{ticker} শেয়ারের তথ্য পেতে সমস্যা হয়েছে। ত্রুটি: {str(e)}",
+                "answer_bn": (
+                    f"{ticker} শেয়ারের তথ্য পেতে সমস্যা হয়েছে। ত্রুটি: {str(e)}"
+                    if (lang or "bn").lower() != "en"
+                    else f"Failed to fetch {ticker} stock quote: {str(e)}"
+                ),
                 "sources": [],
                 "flags": {"single_source": False, "disagreement": False},
                 "metrics": {

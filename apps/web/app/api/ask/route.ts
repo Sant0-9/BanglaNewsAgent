@@ -13,111 +13,40 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Add unique request ID and timestamp to prevent caching issues
-    const requestId = crypto.randomUUID()
-    const timestamp = Date.now()
-    
-    console.log(`[${requestId}] Processing query: "${body.query}" (lang: ${body.lang || 'bn'}, mode: ${body.mode || 'brief'})`)
-
-    // Forward request to Python API with anti-cache headers
+    // Forward request to Python API
     const response = await fetch(`${API_BASE}/ask`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'X-Request-ID': requestId,
-        'X-Timestamp': timestamp.toString(),
       },
+      // Backend FastAPI `AskRequest` only accepts 'brief' | 'deep' for mode
+      // Our frontend may use route labels like 'news', so do not forward them.
       body: JSON.stringify({
         query: body.query,
-        lang: body.lang || 'bn',
-        mode: body.mode || 'brief',
-        window_hours: body.window_hours,
-        request_id: requestId,
-        timestamp: timestamp
+        lang: body.lang || 'bn'
       })
     })
 
     if (!response.ok) {
-      let errorData: any
-      let errorMessage = 'Backend API error'
-      
-      try {
-        const contentType = response.headers.get('content-type')
-        if (contentType?.includes('application/json')) {
-          errorData = await response.json()
-          errorMessage = errorData.error || errorData.message || errorMessage
-        } else {
-          errorData = await response.text()
-          errorMessage = errorData || errorMessage
-        }
-      } catch (parseError) {
-        console.error(`[${requestId}] Failed to parse error response:`, parseError)
-      }
-      
-      console.error(`[${requestId}] API Error (${response.status}):`, errorMessage)
+      const errorData = await response.text()
+      console.error('API Error:', errorData)
       
       return NextResponse.json(
         { 
-          error: errorMessage,
-          details: response.status === 404 ? 'API endpoint not found' : 
-                   response.status === 429 ? 'Rate limit exceeded' :
-                   response.status === 503 ? 'Backend service unavailable' : 'Unknown error',
-          status: response.status,
-          request_id: requestId
+          error: 'Backend API error',
+          details: response.status === 404 ? 'API endpoint not found' : 'Unknown error'
         },
         { status: response.status }
       )
     }
 
-    let data: any
-    try {
-      data = await response.json()
-      console.log(`[${requestId}] Successfully processed query, response length: ${JSON.stringify(data).length} chars`)
-    } catch (parseError) {
-      console.error(`[${requestId}] Failed to parse successful response:`, parseError)
-      return NextResponse.json(
-        { 
-          error: 'Invalid response from backend API',
-          details: 'Failed to parse JSON response',
-          request_id: requestId
-        },
-        { status: 500 }
-      )
-    }
-
-    // Ensure response has required fields with defaults
-    const enhancedData = {
-      answer_bn: data.answer_bn || '',
-      answer_en: data.answer_en || undefined,
-      sources: Array.isArray(data.sources) ? data.sources : [],
-      flags: {
-        disagreement: Boolean(data.flags?.disagreement),
-        single_source: Boolean(data.flags?.single_source),
-        ...data.flags
-      },
-      metrics: {
-        source_count: Number(data.metrics?.source_count) || 0,
-        updated_ct: data.metrics?.updated_ct || new Date().toISOString(),
-        latency_ms: data.metrics?.latency_ms,
-        intent: data.metrics?.intent,
-        confidence: data.metrics?.confidence,
-        request_id: requestId,
-        ...data.metrics
-      },
-      followups: Array.isArray(data.followups) ? data.followups : []
-    }
+    const data = await response.json()
     
-    // Add anti-cache headers to response
-    return new NextResponse(JSON.stringify(enhancedData), {
+    // Add CORS headers for development
+    return new NextResponse(JSON.stringify(data), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache, no-store, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-        'X-Request-ID': requestId,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -125,22 +54,14 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    const requestId = crypto.randomUUID()
-    console.error(`[${requestId}] API Route Error:`, error)
+    console.error('API Route Error:', error)
     
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error',
-        request_id: requestId
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
-      { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'X-Request-ID': requestId,
-        }
-      }
+      { status: 500 }
     )
   }
 }
